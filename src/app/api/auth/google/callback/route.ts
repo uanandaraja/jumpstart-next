@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { OAuth2RequestError } from "arctic";
 import { generateId } from "lucia";
 import { eq } from "drizzle-orm";
-import { redirect } from "next/navigation";
 
 import { db } from "@/db";
 import { google } from "@/lib/auth/lucia/google";
@@ -22,12 +21,17 @@ interface GoogleUser {
 
 async function validateOAuthRequest(
   request: Request,
-): Promise<{ code: string; codeVerifier: string } | null> {
+): Promise<{
+  code: string;
+  codeVerifier: string;
+  returnTo: string | null;
+} | null> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
   const storedState = cookies().get("google_oauth_state")?.value ?? null;
   const codeVerifier = cookies().get("code_verifier")?.value ?? null;
+  const returnTo = cookies().get("return_to")?.value ?? null;
 
   console.log(`Code: ${code}, State: ${state}, Stored State: ${storedState}`);
 
@@ -42,7 +46,7 @@ async function validateOAuthRequest(
     return null;
   }
 
-  return { code, codeVerifier };
+  return { code, codeVerifier, returnTo };
 }
 
 async function getGoogleUserData(accessToken: string): Promise<GoogleUser> {
@@ -96,7 +100,7 @@ async function createSessionAndSetCookie(userId: string): Promise<void> {
   console.log("Session created and cookie set");
 }
 
-export async function GET(request: Request): Promise<Response | void> {
+export async function GET(request: Request): Promise<Response> {
   console.log("Starting GET function");
 
   const validationResult = await validateOAuthRequest(request);
@@ -104,7 +108,7 @@ export async function GET(request: Request): Promise<Response | void> {
     return new Response(null, { status: 400 });
   }
 
-  const { code, codeVerifier } = validationResult;
+  const { code, codeVerifier, returnTo } = validationResult;
 
   try {
     console.log("Validating authorization code");
@@ -118,8 +122,9 @@ export async function GET(request: Request): Promise<Response | void> {
     const userId = await findOrCreateUser(googleUser);
     await createSessionAndSetCookie(userId);
 
-    // Redirect to home page after successful login
-    redirect("/");
+    // Redirect to returnTo if it exists, otherwise to the homepage
+    const redirectUrl = returnTo ? returnTo : new URL("/", request.url);
+    return Response.redirect(redirectUrl);
   } catch (e) {
     console.error("Error occurred:", e);
     if (
