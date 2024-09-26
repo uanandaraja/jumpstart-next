@@ -33,10 +33,10 @@ export default function ContinueGoogle() {
       <Card className="w-full max-w-md rounded-2xl">
         <CardHeader className="space-y-4">
           <CardTitle className="text-xl font-semibold text-center">
-            Selamat datang di Rangkuman!
+            Welcome to Jumpstart-Next!
           </CardTitle>
           <CardDescription className="text-center">
-            Gunakan akun Google kamu untuk melanjutkan
+            Use your Google account to continue
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center">
@@ -51,7 +51,7 @@ export default function ContinueGoogle() {
               ) : (
                 <FaGoogle className="mr-2 h-3.5 w-3.5" />
               )}
-              {isLoading ? "Membuka..." : "Masuk dengan Google"}
+              {isLoading ? "Loading..." : "Continue with Google"}
             </span>
           </Button>
         </CardContent>

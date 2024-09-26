@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Rangkuman",
-  description: "Web merangkum video Youtube",
+  title: "Jumpstart-Next",
+  description: "Nextjs Starter by @nizzyhussle",
 };
 
 export default function RootLayout({
