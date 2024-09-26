@@ -11,12 +11,12 @@ What we have here:
 - Nextjs 14 with App Router
 - Drizzle ORM for Postrges
 - Tanstack React Query
+- Auth with Lucia
 - Basic POST and GET endpoint (todo)
 - Hooks for data fetching (todo)
 
 Maybe I'll add these in the future:
 
-- Auth
 - Payment
 
 ## How to start
@@ -25,3 +25,9 @@ Maybe I'll add these in the future:
 - pnpm i
 - pnpm dev
 - Mess around
+
+## The DB stuff
+
+- get a postgres db, wherever you prefer
+- pass the connection string to the .env file
+- pnpm drizzle-kit migrate
