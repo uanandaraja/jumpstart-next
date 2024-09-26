@@ -5,8 +5,8 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { db } from "@/db";
-import { google } from "@/auth/lucia/google";
-import { lucia } from "@/auth/lucia";
+import { google } from "@/lib/auth/lucia/google";
+import { lucia } from "@/lib/auth/lucia";
 import { userTable } from "@/db/schema";
 
 interface GoogleUser {
