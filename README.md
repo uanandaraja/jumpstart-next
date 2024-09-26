@@ -11,7 +11,7 @@ What we have here:
 - Nextjs 14 with App Router
 - Drizzle ORM for Postrges
 - Tanstack React Query
-- Auth with Lucia
+- Lucia Auth with Google OAuth
 - Basic POST and GET endpoint (todo)
 - Hooks for data fetching (todo)
 
@@ -24,6 +24,7 @@ Maybe I'll add these in the future:
 - Clone the project
 - pnpm i
 - pnpm dev
+- get yourself a postgres db and google oauth credentials (see .env.example)
 - Mess around
 
 ## The DB stuff
