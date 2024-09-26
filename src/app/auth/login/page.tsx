@@ -17,15 +17,8 @@ export default function ContinueGoogle() {
 
   const handleGoogleLogin = () => {
     setIsLoading(true);
-    const newWindow = window.open(
-      "/api/auth/google",
-      "_blank",
-      "noopener,noreferrer",
-    );
-    if (newWindow) newWindow.opener = null;
-
-    // Reset loading state after a short delay
-    setTimeout(() => setIsLoading(false), 5000);
+    // Redirect the current window to the Google auth endpoint
+    window.location.href = "/api/auth/google";
   };
 
   return (
