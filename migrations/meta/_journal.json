@@ -8,6 +8,13 @@
       "when": 1727332063400,
       "tag": "0000_mute_crystal",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1727355280494,
+      "tag": "0001_burly_klaw",
+      "breakpoints": true
     }
   ]
 }

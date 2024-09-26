@@ -19,9 +19,7 @@ interface GoogleUser {
   locale: string;
 }
 
-async function validateOAuthRequest(
-  request: Request,
-): Promise<{
+async function validateOAuthRequest(request: Request): Promise<{
   code: string;
   codeVerifier: string;
   returnTo: string | null;
@@ -82,6 +80,10 @@ async function findOrCreateUser(googleUser: GoogleUser): Promise<string> {
       id: userId,
       googleId: googleUser.sub,
       email: googleUser.email,
+      emailVerified: googleUser.email_verified,
+      name: googleUser.name,
+      givenName: googleUser.given_name,
+      familyName: googleUser.family_name,
       profileImageUrl: googleUser.picture,
     })
     .execute();
