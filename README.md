@@ -11,8 +11,8 @@ What we have here:
 - Nextjs 14 with App Router
 - Drizzle ORM for Postrges
 - Tanstack React Query
-- Basic POST and GET endpoint
-- Hooks for data fetching
+- Basic POST and GET endpoint (todo)
+- Hooks for data fetching (todo)
 
 Maybe I'll add these in the future:
 
