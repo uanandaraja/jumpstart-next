@@ -68,11 +68,9 @@ async function findOrCreateUser(googleUser: GoogleUser): Promise<string> {
     .execute();
 
   if (existingUser.length > 0) {
-    console.log("Existing user found");
     return existingUser[0].id;
   }
 
-  console.log("Creating new user");
   const userId = generateId(15);
   await db
     .insert(userTable)
@@ -87,7 +85,6 @@ async function findOrCreateUser(googleUser: GoogleUser): Promise<string> {
       profileImageUrl: googleUser.picture,
     })
     .execute();
-  console.log(`New user created with ID: ${userId}`);
   return userId;
 }
 
@@ -99,34 +96,25 @@ async function createSessionAndSetCookie(userId: string): Promise<void> {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  console.log("Session created and cookie set");
 }
 
 export async function GET(request: Request): Promise<Response> {
-  console.log("Starting GET function");
-
   const validationResult = await validateOAuthRequest(request);
   if (!validationResult) {
     return new Response(null, { status: 400 });
   }
 
-  const { code, codeVerifier, returnTo } = validationResult;
+  const { code, codeVerifier } = validationResult;
 
   try {
-    console.log("Validating authorization code");
     const tokens = await google.validateAuthorizationCode(code, codeVerifier);
-    console.log("Authorization code validated successfully");
 
-    console.log("Fetching Google user data");
     const googleUser = await getGoogleUserData(tokens.accessToken);
-    console.log("googleUser = ", googleUser);
 
     const userId = await findOrCreateUser(googleUser);
     await createSessionAndSetCookie(userId);
 
-    // Redirect to returnTo if it exists, otherwise to the homepage
-    const redirectUrl = returnTo ? returnTo : new URL("/", request.url);
-    return Response.redirect(redirectUrl);
+    return Response.redirect(new URL("/dashboard", request.url));
   } catch (e) {
     console.error("Error occurred:", e);
     if (
