@@ -1,10 +1,23 @@
-import { pgTable, serial, text, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
-export const todos = pgTable("todos", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  description: text("description"),
-  isCompleted: boolean("is_completed").default(false).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+export const userTable = pgTable("user", {
+  id: text("id").primaryKey(),
+  googleId: text("google").notNull().unique(),
+  email: text("email").notNull(),
+  profileImageUrl: text("profile_image_url"),
 });
+
+export type User = typeof userTable.$inferInsert;
+
+export const sessionTable = pgTable("session", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+    mode: "date",
+  }).notNull(),
+});
+
+export type Session = typeof sessionTable.$inferInsert;
